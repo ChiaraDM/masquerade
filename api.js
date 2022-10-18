@@ -11,6 +11,7 @@ api.use(cors());
 
 // Api routes
 
+// GET REQUESTS
 api.get("/", (req, res) => res.send("Masquerade API"));
 
 api.get("/alien", async (req, res) => {
@@ -37,6 +38,24 @@ api.get("/location", async (req, res) => {
 api.get("/incident", async (req, res) => {
     const incidents = await db.query("SELECT * FROM incident");
     res.send(incidents.rows);
+})
+
+// POST REQUESTS
+api.post("/alien", async (req, res) => {
+    const alien = req.body;
+    const data = await db.query(
+        "INSERT INTO alien (alien_name, alien_colour, planet_id) VALUES ($1, $2, $3)", [alien[0].alien_name, alien[0].alien_colour, alien[0].planet_id]
+        )
+        console.log(data)
+        res.status(200).send(data)
+})
+
+api.post("/location", async (req, res) => {
+    const location = req.body;
+    const data = await db.query(
+        "INSERT INTO location (city_name, country_name VALUES ($1, $2)", [location[0].city_name, location[0].country_name]
+    )   
+    res.status(200).send(data)
 })
 
 
