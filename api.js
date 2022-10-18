@@ -13,4 +13,31 @@ api.use(cors());
 
 api.get("/", (req, res) => res.send("Masquerade API"));
 
+api.get("/alien", async (req, res) => {
+    const aliens = await db.query("SELECT * FROM alien");
+    res.send(aliens.rows);
+})
+
+api.get("/alien/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    const data = await db.query("SELECT * FROM alien WHERE alien_id = $1", [id]);
+    res.send(data.rows[0]);
+})
+
+api.get("/planet", async (req, res) => {
+    const planets = await db.query("SELECT * FROM planet");
+    res.send(planets.rows);
+})
+
+api.get("/location", async (req, res) => {
+    const locations = await db.query("SELECT * FROM location");
+    res.send(locations.rows);
+})
+
+api.get("/incident", async (req, res) => {
+    const incidents = await db.query("SELECT * FROM incident");
+    res.send(incidents.rows);
+})
+
+
 module.exports = api;
